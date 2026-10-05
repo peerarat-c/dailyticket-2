@@ -1,0 +1,358 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Tickets · งานประจำวัน</title>
+<style>
+:root{--bg:#f6f5f2;--cd:#fff;--tx:#1d1d1b;--mu:#6b6a66;--bd:#e3e1db;--ac:#2a5bd7;--new:#6b6a66;--doing:#2a5bd7;--blocked:#c2410c;--done:#15803d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--cd:#212120;--tx:#efeee9;--mu:#a3a29c;--bd:#33332f;--ac:#7aa2ff;--new:#a3a29c;--doing:#7aa2ff;--blocked:#fb923c;--done:#4ade80}}
+:root[data-theme="dark"]{--bg:#161615;--cd:#212120;--tx:#efeee9;--mu:#a3a29c;--bd:#33332f;--ac:#7aa2ff;--new:#a3a29c;--doing:#7aa2ff;--blocked:#fb923c;--done:#4ade80}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Sarabun","Noto Sans Thai",system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:22px}header p{margin:2px 0 0;color:var(--mu);font-size:13px}
+.badge{font-size:12px;color:var(--mu);border:1px solid var(--bd);border-radius:99px;padding:2px 10px}
+button,input,select,textarea{font:inherit;color:inherit;background:var(--cd);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;max-width:100%}
+button{cursor:pointer}button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+.box{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--mu)}
+label input,label select,label textarea{font-size:14px;color:var(--tx)}
+.full{grid-column:1/-1}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--cd);border:1px solid var(--bd);border-radius:10px;padding:8px;text-align:center;cursor:pointer}
+.stat b{display:block;font-size:22px}.stat span{font-size:12px;color:var(--mu)}
+.stat.on{outline:2px solid var(--ac)}
+.tk{background:var(--cd);border:1px solid var(--bd);border-left:5px solid var(--new);border-radius:10px;padding:12px;margin:10px 0}
+.tk.doing{border-left-color:var(--doing)}.tk.blocked{border-left-color:var(--blocked)}.tk.done{border-left-color:var(--done)}
+.top{display:flex;justify-content:space-between;gap:8px}.tk p{margin:4px 0;white-space:pre-wrap}
+.meta{font-size:13px;color:var(--mu);margin-bottom:8px}
+.pri{font-size:11px;border:1px solid var(--bd);border-radius:99px;padding:0 8px;height:20px;white-space:nowrap}
+.pri.high{color:var(--blocked);border-color:var(--blocked)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.empty{text-align:center;color:var(--mu);padding:28px}
+.dash{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:10px 0}
+.col{background:var(--cd);border:1px solid var(--bd);border-top:4px solid var(--new);border-radius:10px;padding:10px}
+.col h3{margin:0 0 6px;font-size:14px;display:flex;justify-content:space-between}
+.col.over{border-top-color:#b91c1c}.col.urgent{border-top-color:var(--blocked)}.col.soon{border-top-color:#ca8a04}.col.later{border-top-color:var(--done)}
+.it{display:block;width:100%;text-align:left;margin:4px 0;font-size:13px;padding:5px 8px}.it small,.col>small{display:block;color:var(--mu)}
+#detail{display:none}#detail.on{display:block}
+.lbl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.lbl svg{background:#fff;padding:6px;border-radius:6px;max-width:100%}
+.due{font-size:12px;border-radius:99px;padding:0 8px;border:1px solid var(--bd)}.due.over{color:#b91c1c;border-color:#b91c1c}.due.urgent{color:var(--blocked);border-color:var(--blocked)}
+@media print{body *{visibility:hidden}#detail,#detail *{visibility:visible}#detail{position:absolute;left:0;top:0;width:100%;border:0}.noprint,.noprint *{display:none!important}}
+:root{--over:#b91c1c;--soon:#a16207;--later:#0e7490}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--over:#f87171;--soon:#facc15;--later:#22d3ee}}
+:root[data-theme="dark"]{--over:#f87171;--soon:#facc15;--later:#22d3ee}
+.col.over{border-top-color:var(--over)}.col.soon{border-top-color:var(--soon)}.col.later{border-top-color:var(--later)}
+.bk{--c:var(--new);font-size:12px;font-weight:600;color:var(--c);border:1px solid var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border-radius:6px;padding:1px 8px;white-space:nowrap}
+.bk.over{--c:var(--over)}.bk.urgent{--c:var(--blocked)}.bk.soon{--c:var(--soon)}.bk.later{--c:var(--later)}.bk.done{--c:var(--done)}
+.tk.k-over{border-left-color:var(--over)}.tk.k-urgent{border-left-color:var(--blocked)}.tk.k-soon{border-left-color:var(--soon)}.tk.k-later{border-left-color:var(--later)}.tk.k-done{border-left-color:var(--done)}
+.pri.vhigh,.pri.max{color:var(--blocked);border-color:var(--blocked);font-weight:600}.pri.max{background:color-mix(in srgb,var(--blocked) 15%,transparent)}
+.hist{font-size:12px;color:var(--mu);margin-top:8px}.hist div{padding:2px 0}.hist summary{cursor:pointer}
+.tp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.tp .d{flex:1 1 120px;min-width:0}.tp .t{width:62px;text-align:center}
+#wheel{position:fixed;z-index:50;background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:8px;display:none;box-shadow:0 8px 24px #0005;text-align:center}#wheel.on{display:block}
+.wc{display:flex;gap:6px;position:relative;margin-bottom:6px}.wc>div{height:150px;width:56px;overflow-y:auto;scroll-snap-type:y mandatory;padding:60px 0;box-sizing:border-box;scrollbar-width:none}
+.wc>div span{display:block;height:30px;line-height:30px;scroll-snap-align:center;font-size:18px}
+.wc::after{content:"";position:absolute;left:0;right:0;top:60px;height:30px;border-top:1px solid var(--ac);border-bottom:1px solid var(--ac);pointer-events:none}
+.pri.hold{color:var(--mu);border-style:dashed}
+
+:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#4a3aa7;--s8:#e34948}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767}}
+:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767}
+.g-urgent{--c:var(--blocked)}.g-soon{--c:var(--soon)}.g-later{--c:var(--later)}
+#schwrap{background:color-mix(in srgb,var(--c) 13%,var(--cd));border:1px solid color-mix(in srgb,var(--c) 50%,var(--bd));border-radius:12px;padding:10px;margin:6px 0}
+#sched>.meta{color:var(--tx)}
+.tb{border:1px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--cd))}
+.tb.on{background:color-mix(in srgb,var(--c) 32%,var(--cd));font-weight:700;box-shadow:inset 0 -3px 0 var(--c)}
+.dbox{background:color-mix(in srgb,var(--c) 7%,var(--cd));border:1px solid color-mix(in srgb,var(--c) 30%,var(--bd));border-radius:10px;padding:8px;margin:6px 0}
+.chart{padding:12px;margin:10px 0}.chart h3{margin:0 0 6px;font-size:14px}.rate{font-size:13px;margin:0 0 4px}
+.cv{width:100%}.cv svg{display:block;max-width:100%;overflow:visible}
+.gl{stroke:var(--bd);stroke-width:1}.ax{fill:var(--mu);font-size:11px}.dl{fill:var(--tx);font-size:12px}
+.ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}.mk{stroke:var(--cd);stroke-width:2}
+.xh{stroke:var(--mu);stroke-width:1;stroke-dasharray:3 3}
+.tip{position:absolute;pointer-events:none;background:var(--cd);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:12px;box-shadow:0 4px 14px #0003;z-index:5;white-space:nowrap}
+.tip .th{color:var(--mu);margin-bottom:2px}.tip .tr{display:flex;align-items:center;gap:6px}.tip .tr i{width:12px;height:2px;display:inline-block}.tip .tr b{font-size:14px}.tip .tx2{color:var(--mu);margin-top:2px}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:6px}.lgi{display:inline-flex;align-items:center;gap:6px}.lgi i{width:14px;height:2px;display:inline-block}
+.chart details{margin-top:8px;font-size:12px}.chart summary{cursor:pointer;color:var(--mu)}
+.chart table{border-collapse:collapse;margin-top:6px;font-size:12px;width:100%}.chart th,.chart td{border-bottom:1px solid var(--bd);padding:3px 6px;text-align:right}.chart th:first-child,.chart td:first-child{text-align:left}
+.modal{display:none;position:fixed;inset:0;background:#0007;z-index:60;align-items:center;justify-content:center;padding:16px}.modal.on{display:flex}
+.mbox{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:16px;max-width:440px;width:100%;box-sizing:border-box}.mbox textarea{width:100%;box-sizing:border-box}
+</style></head><body><main>
+<header><div><h1 data-i="title"></h1><p data-i="sub"></p></div>
+<div class="bar"><span class="badge" id="mode"></span><button id="lang">EN</button></div></header>
+
+<section class="box"><div class="grid">
+<label class="full"><span data-i="ttl"></span><input id="ti" data-p="ph"></label>
+<label class="full"><span data-i="note"></span><textarea id="no" rows="2"></textarea></label>
+<label><span data-i="who"></span><select id="wh"><option value="">—</option><option>RUIIY</option><option>IN</option></select></label>
+<label><span data-i="pri"></span><select id="pr"></select></label>
+<label><span data-i="rcv"></span><div id="rc" class="tp"></div></label>
+<label><span data-i="due"></span><div id="du" class="tp"></div></label>
+<label class="full"><span data-i="att"></span><input type="file" id="cf" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"></label>
+<label class="full" style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="cd" checked><span data-i="toDrive"></span></label>
+<label><span>&nbsp;</span><button class="p" id="add" data-i="add"></button></label>
+</div></section>
+
+<section class="box" id="detail"></section>
+<h2 data-i="dashT" style="font-size:16px;margin:16px 0 0"></h2><div class="dash" id="dash"></div>
+<h2 data-i="trendT" style="font-size:16px;margin:16px 0 6px"></h2>
+<div class="bar" id="trc"><span class="bar" id="trp"><button data-per="d" data-i="perD"></button><button data-per="w" data-i="perW"></button><button data-per="m" data-i="perM"></button></span>
+<label style="flex-direction:row;align-items:center;gap:6px"><span data-i="by"></span><select id="tby"></select></label></div>
+<div class="box chart"><h3 id="c1t"></h3><div class="cv" id="c1"></div><div class="lg" id="c1l"></div><details><summary data-i="tblV"></summary><div id="c1x"></div></details></div>
+<div class="box chart"><h3 id="c2t"></h3><p class="rate" id="c2s"></p><div class="cv" id="c2"></div><div class="lg" id="c2l"></div><details><summary data-i="tblV"></summary><div id="c2x"></div></details></div>
+<h2 data-i="schT" style="font-size:16px;margin:16px 0 6px"></h2><div id="schwrap" class="g-urgent"><div class="bar" id="tabs"></div><div id="sched"></div></div>
+<div class="bar"><label><span data-i="day"></span><input type="date" id="dy"></label>
+<button id="td" data-i="today"></button>
+<label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="al"><span data-i="all"></span></label>
+<input id="fd" data-p="find" size="14"><button id="xl" data-i="xl"></button></div>
+<div class="stats" id="stats"></div>
+<div id="list"></div>
+</main>
+<div id="lateM" class="modal"><div class="mbox"><b id="lmT"></b><div class="meta" id="lmI" style="margin-top:4px"></div>
+<label><span data-i="lrAsk"></span><textarea id="lmR" rows="3"></textarea></label>
+<div class="row" style="margin-top:10px"><button class="p" id="lmS" data-i="lrSave"></button><button id="lmK" data-i="lrSkip"></button></div></div></div>
+<div id="wheel"><div class="wc"><div id="wH"></div><div id="wM"></div></div><button class="p" id="wok">OK</button></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const L={en:{title:"Daily tickets",sub:"Log work as tickets with received and completed times",ttl:"Title",note:"Details",who:"Assignee",pri:"Priority",rcv:"Received",dn:"Completed",add:"Add ticket",day:"Day",today:"Today",all:"All days",empty:"No tickets here yet",del:"Delete",took:"Took",st:{new:"Received",doing:"In progress",blocked:"Blocked",done:"Done"},prs:{low:"Low",mid:"Normal",high:"High"},err:"Could not save (you may have view-only access)",sh:"Shared with team",lo:"Saved on this device only",ph:"e.g. Review vendor contract",stl:"Status",h:"h",m:"m"},
+th:{title:"งานประจำวัน",sub:"บันทึกงานเป็น ticket พร้อมเวลารับงานและเวลาที่เสร็จ",ttl:"หัวข้องาน",note:"รายละเอียด",who:"ผู้รับผิดชอบ",pri:"ความสำคัญ",rcv:"เวลารับงาน",dn:"เวลาที่เสร็จ",add:"เพิ่ม ticket",day:"วันที่",today:"วันนี้",all:"ทุกวัน",empty:"ยังไม่มี ticket",del:"ลบ",took:"ใช้เวลา",st:{new:"รับงานแล้ว",doing:"กำลังทำ",blocked:"ติดขัด",done:"เสร็จแล้ว"},prs:{low:"ต่ำ",mid:"ปกติ",high:"สูง"},err:"บันทึกไม่สำเร็จ (อาจมีสิทธิ์ดูอย่างเดียว)",sh:"แชร์กับทีม",lo:"บันทึกในเครื่องนี้เท่านั้น",ph:"เช่น ตรวจร่างสัญญากับผู้ขาย",stl:"สถานะ",h:"ชม.",m:"นาที"}};
+const ST=["new","doing","blocked","done"];
+Object.assign(L.en,{due:"Due",dashT:"What needs attention",over:"Overdue",urgent:"Urgent (within 24h)",soon:"Soon (within 3 days)",later:"Can wait",none:"Nothing here",xl:"Export Excel",find:"Scan / enter code",lbl:"QR / Barcode",pr_:"Print label",close:"Close",noTk:"Ticket not found",left:"left",ago:"overdue by",code:"Code",urg:"Urgency"});
+Object.assign(L.th,{due:"กำหนดเสร็จ",dashT:"งานที่ต้องจับตา",over:"เกินกำหนด",urgent:"ด่วน (ภายใน 24 ชม.)",soon:"ใกล้ถึงกำหนด (ภายใน 3 วัน)",later:"รอได้",none:"ไม่มีรายการ",xl:"ส่งออก Excel",find:"สแกน / ใส่รหัส",lbl:"QR / บาร์โค้ด",pr_:"พิมพ์ป้าย",close:"ปิด",noTk:"ไม่พบ ticket",left:"เหลือ",ago:"เกินมา",code:"รหัส",urg:"ความเร่งด่วน"});
+Object.assign(L.en,{schT:"Schedule summary",tToday:"Today",t2d:"2 days ahead",tWeek:"This week",tMonth:"This month",items:"items",cal:"Add to Google Calendar",inCal:"In calendar",again:"Already added. Add again?",calOk:"Added to Google Calendar",calErr:"Could not reach Google Calendar. Check the connector is connected.",att:"Attachments",toDrive:"Also send to Google Drive",drErr:"Could not send to Google Drive"});
+Object.assign(L.th,{schT:"สรุปตารางงาน",tToday:"วันนี้",t2d:"อีก 2 วัน",tWeek:"สัปดาห์นี้",tMonth:"เดือนนี้",items:"รายการ",cal:"เพิ่มลง Google Calendar",inCal:"อยู่ในปฏิทินแล้ว",again:"เพิ่มไปแล้ว ต้องการเพิ่มซ้ำหรือไม่",calOk:"เพิ่มลง Google Calendar แล้ว",calErr:"เชื่อมต่อ Google Calendar ไม่ได้ ตรวจสอบว่าเชื่อมต่อ connector แล้ว",att:"ไฟล์แนบ",toDrive:"ส่งไป Google Drive ด้วย",drErr:"ส่งไป Google Drive ไม่สำเร็จ"});
+Object.assign(L.en,{pri:"Urgency level",prs:{low:"Low",mid:"Normal",high:"Urgent",vhigh:"Very urgent",max:"Most urgent"},urg:"Dashboard group",edit:"Edit",save:"Save",cancel:"Cancel",hist:"Edit history",created:"Ticket created"});
+Object.assign(L.th,{pri:"ระดับความเร่งด่วน",prs:{low:"ต่ำ",mid:"ปกติ",high:"ด่วน",vhigh:"ด่วนมาก",max:"ด่วนที่สุด"},urg:"กลุ่มใน Dashboard",edit:"แก้ไข",save:"บันทึก",cancel:"ยกเลิก",hist:"ประวัติการแก้ไข",created:"สร้าง ticket"});
+const P=["low","mid","high","vhigh","max"],FLD={title:"ttl",note:"note",who:"who",priority:"pri",status:"stl",receivedAt:"rcv",dueAt:"due",completedAt:"dn"};
+let editing=null;
+function chg(x,n){const o=[];for(const f in FLD)if((x[f]??null)!==(n[f]??null))o.push({at:Date.now(),f,from:x[f]??null,to:n[f]??null});if(o.length)n.log=[...(x.log||[]),...o].slice(-200);return n}
+const fm=ms=>new Date(ms).toLocaleString(lang==="th"?"th-TH":"en-GB");
+function fv(f,v,t){if(v==null||v==="")return"—";if(f==="status")return t.st[v]||v;if(f==="priority")return t.prs[v]||v;if(/At$/.test(f))return fm(v);v=String(v);return esc(v.slice(0,80))+(v.length>80?"…":"")}
+const hist=(x,t)=>{const l=[...(x.log||[])].reverse();return l.length?`<details class="hist"><summary>${t.hist} (${l.length})</summary>${l.map(e=>`<div>${fm(e.at)} · ${e.f==="new"?t.created:`<b>${t[FLD[e.f]]}</b>: ${fv(e.f,e.from,t)} → ${fv(e.f,e.to,t)}`}</div>`).join("")}</details>`:""};
+function editForm(x,t){return `<article class="tk ${x.status}" data-id="${x.id}"><div class="grid"><label class="full">${t.ttl}<input data-e="title" value="${esc(x.title)}"></label><label class="full">${t.note}<textarea data-e="note" rows="3">${esc(x.note)}</textarea></label><label>${t.who}${whoSel(x.who)}</label><label>${t.pri}<select data-e="priority">${PE.map(k=>`<option value="${k}" ${k===x.priority?"selected":""}>${t.prs[k]}</option>`).join("")}</select></label></div><div class="row" style="margin-top:8px"><button class="p" data-save>${t.save}</button><button data-cancel>${t.cancel}</button></div></article>`}
+Object.assign(L.en,{prs:{...L.en.prs,hold:"On hold (continue later)"},autoTip:"Auto-raised to Very urgent: less than 24h to the due time"});
+Object.assign(L.th,{prs:{...L.th.prs,hold:"รอดำเนินการต่อภายหลัง"},autoTip:"ปรับเป็น ด่วนมาก อัตโนมัติ: เหลือเวลาไม่ถึง 24 ชั่วโมง"});
+const PE=[...P,"hold"],W=["RUIIY","IN"],BASE="https://claude.ai/artifact/AfreVoq1QzDA16PytsEbNA",H=36e5;
+function normT(s){const m=/^(\d{1,2})[:.]?(\d{2})?$/.exec(String(s).trim());if(!m)return null;const h=+m[1],n=+(m[2]||0);return h<24&&n<60?p2(h)+":"+p2(n):null}
+function tpInner(ms,dis){const v=ms?loc(ms):"",d=dis?" disabled":"";return `<input type="date" class="d" value="${v.slice(0,10)}"${d}><input class="t" inputmode="numeric" maxlength="5" placeholder="HH:MM" value="${v.slice(11)}"${d}><button type="button" data-wheel${d}>🕒</button>`}
+const mkTp=(f,ms,dis)=>`<span class="tp" data-f="${f}">${tpInner(ms,dis)}</span>`,setTp=(el,ms)=>{el.innerHTML=tpInner(ms)};
+function tpv(el){const d=el.querySelector(".d").value;return d?new Date(d+"T"+(normT(el.querySelector(".t").value)||"00:00")).getTime():null}
+const whoSel=v=>`<select data-e="who"><option value="">—</option>${[...W,...(v&&!W.includes(v)?[v]:[])].map(w=>`<option ${w===v?"selected":""}>${esc(w)}</option>`).join("")}</select>`;
+const effP=x=>x.status!=="done"&&x.priority!=="hold"&&x.dueAt&&x.dueAt-Date.now()<=24*H&&P.indexOf(x.priority)<3?"vhigh":x.priority;
+const pill=(x,t)=>{const e=effP(x),a=e!==x.priority;return `<span class="pri ${e}"${a?` title="${t.autoTip}"`:""}>${t.prs[e]||""}${a?" ⚡":""}</span>`};
+let tab="today";
+function renderSched(){const t=L[lang],n=new Date(),d0=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime(),D=864e5;
+ let a=d0,b=d0+D;if(tab==="d2")b=d0+3*D;
+ if(tab==="week"){a=d0-((new Date(d0).getDay()+6)%7)*D;b=a+7*D}
+ if(tab==="month"){a=new Date(n.getFullYear(),n.getMonth(),1).getTime();b=new Date(n.getFullYear(),n.getMonth()+1,1).getTime()}
+ const w=x=>x.dueAt||x.receivedAt,r=tickets.filter(x=>w(x)>=a&&w(x)<b).sort((p,q)=>w(p)-w(q)),days={};
+ r.forEach(x=>(days[dkey(w(x))]=days[dkey(w(x))]||[]).push(x));
+ $("schwrap").className="g-"+G[tab];$("tabs").innerHTML=[["today","tToday"],["d2","t2d"],["week","tWeek"],["month","tMonth"]].map(([k,l])=>`<button class="tb g-${G[k]}${tab===k?" on":""}" data-tab="${k}">${t[l]}</button>`).join("");
+ $("sched").innerHTML=`<div class="meta">${r.length} ${t.items} · ${t.st.done} ${r.filter(x=>x.status==="done").length} · ${t.over} ${r.filter(x=>bucket(x)==="over").length}</div>`+(Object.keys(days).sort().map(k=>`<div class="dbox"><b>${new Date(k+"T00:00").toLocaleDateString(lang==="th"?"th-TH":"en-GB",{weekday:"short",day:"numeric",month:"short"})}</b>${days[k].map(x=>`<button class="it" data-open="${x.id}"><b>${loc(w(x)).slice(11)}</b> ${esc(x.title)}<small>${t.st[x.status]}${x.who?" · "+esc(x.who):""}${x.dueAt?"":" ("+t.rcv+")"}</small></button>`).join("")}</div>`).join("")||`<div class="empty">${t.none}</div>`)}
+async function pushCal(x){const t=L[lang];if(x.calAt&&!confirm(t.again))return;
+ try{const m=await window.claude.use("mcp");if(!m)throw 0;const s=x.dueAt||x.receivedAt;
+  await m.callTool("Google Calendar","create_event",{summary:`[${code(x)}] ${x.title}`,startTime:new Date(s).toISOString(),endTime:new Date(s+18e5).toISOString(),description:`${x.note||""}\n${x.who||""}\n${BASE}?t=${code(x)}`});
+  put({...x,calAt:Date.now()});alert(t.calOk)}catch(e){alert(t.calErr)}}
+async function addFiles(x,files,toDrive){const t=L[lang],list=[...(x.files||[])];let as=null,m=null;
+ try{as=await window.claude.use("assets")}catch(e){}
+ if(toDrive)try{m=await window.claude.use("mcp")}catch(e){}
+ for(const f of files){if(f.size>5e6){alert(f.name+" > 5 MB");continue}
+  const r={name:f.name,type:f.type,size:f.size};
+  try{if(as){const u=await as.upload(f);r.id=u.id;r.url=u.url}}catch(e){}
+  if(toDrive){try{const b=await new Promise((ok,no)=>{const fr=new FileReader();fr.onload=()=>ok(fr.result.split(",")[1]);fr.onerror=no;fr.readAsDataURL(f)});
+   await m.callTool("Google Drive","create_file",{title:code(x)+"_"+f.name,base64Content:b,contentMimeType:f.type||"application/octet-stream",disableConversionToGoogleType:true});r.drive=1}catch(e){alert(t.drErr)}}
+  if(r.id||r.drive)list.push(r)}
+ put({...x,files:list})}
+let cur=null;
+const code=x=>x.id.toUpperCase();
+function bucket(x){if(x.status==="done")return"";if(x.priority==="hold")return"later";const mx=x.priority==="max",hi=mx||x.priority==="high"||x.priority==="vhigh";if(!x.dueAt)return mx?"urgent":"later";const d=x.dueAt-Date.now();return d<0?"over":(mx||d<=24*H||(hi&&d<=72*H))?"urgent":d<=72*H?"soon":"later"}
+function rel(ms){const d=ms-Date.now(),t=L[lang];return (d<0?t.ago:t.left)+" "+dur(Math.abs(d))}
+function showDetail(){const el=$("detail");if(!cur){el.className="box";return}
+ const t=L[lang],x=tickets.find(y=>code(y)===String(cur).toUpperCase());el.className="box on";
+ if(!x){el.innerHTML=`<b>${t.noTk}</b> <button data-close>${t.close}</button>`;return}
+ const f=ms=>ms?new Date(ms).toLocaleString(lang==="th"?"th-TH":"en-GB"):"—";
+ el.innerHTML=`<div class="top"><b>${t.code}: ${code(x)}</b><span class="noprint"><button data-prn>${t.pr_}</button> <button data-close>${t.close}</button></span></div>
+ <h2 style="margin:6px 0">${esc(x.title)}</h2><p>${esc(x.note)}</p>
+ <div class="meta">👤 ${esc(x.who)||"—"} · ${t.st[x.status]} · ${t.rcv}: ${f(x.receivedAt)} · ${t.due}: ${f(x.dueAt)} · ${t.dn}: ${f(x.completedAt)}</div>
+ <div class="lbl"><div id="qr"></div><svg id="bc"></svg></div>
+ <div class="noprint bar" style="margin:8px 0"><button data-cal>${t.cal}</button>${x.calAt?`<span class="badge">✓ ${t.inCal}</span>`:""}</div>
+ <div class="noprint"><b>${t.att}</b> <input type="file" id="fl" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"> <label style="flex-direction:row;display:inline-flex;gap:4px"><input type="checkbox" id="dr" checked>${t.toDrive}</label>
+ <div class="bar" style="margin:6px 0">${(x.files||[]).map(f=>(f.url&&/^image/.test(f.type)?`<a href="${f.url}" target="_blank"><img src="${f.url}" alt="" style="height:56px;border-radius:6px"></a>`:f.url?`<a href="${f.url}" target="_blank">📎 ${esc(f.name)}</a>`:`📎 ${esc(f.name)}`)+(f.drive?" ☁️":"")).join("")}</div></div>
+ <div class="noprint">${card(x,t)}</div>`;
+ if($("fl"))$("fl").onchange=e=>addFiles(x,[...e.target.files],$("dr").checked);
+ try{const q=qrcode(0,"M");q.addData(BASE+"?t="+code(x));q.make();$("qr").innerHTML=q.createSvgTag(5,2)}catch(e){}
+ try{JsBarcode("#bc",code(x),{format:"CODE128",height:60,displayValue:true,margin:6})}catch(e){}}
+function openDetail(id){cur=id;showDetail();scrollTo(0,0)}
+const mt=/[?&#]t=([^&]+)/.exec(location.search+location.hash);if(mt)cur=decodeURIComponent(mt[1]);
+let lang="th",tickets=[],filt="",col=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const p2=n=>String(n).padStart(2,"0");
+const loc=ms=>{const d=new Date(ms);return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}T${p2(d.getHours())}:${p2(d.getMinutes())}`};
+const dkey=ms=>loc(ms).slice(0,10);
+const dur=ms=>{const m=Math.max(0,Math.round(ms/60000)),t=L[lang];return m>=60?`${Math.floor(m/60)} ${t.h} ${m%60} ${t.m}`:`${m} ${t.m}`};
+function toast(){alert(L[lang].err)}
+function applyLang(){const t=L[lang];document.documentElement.lang=lang;
+ document.querySelectorAll("[data-i]").forEach(e=>{const k=e.dataset.i;e.textContent=t[k]||t.dn});
+ document.querySelectorAll("[data-p]").forEach(e=>e.placeholder=t[e.dataset.p]);
+ const v=$("pr").value||"mid";$("pr").innerHTML=P.map(k=>`<option value="${k}">${t.prs[k]}</option>`).join("");$("pr").value=v;
+ $("lang").textContent=lang==="th"?"EN":"ไทย";$("mode").textContent=col?t.sh:t.lo;render()}
+function render(){const t=L[lang],all=$("al").checked,d=$("dy").value;
+ const open=tickets.filter(x=>bucket(x));
+ $("dash").innerHTML=["over","urgent","soon","later"].map(k=>{const r=open.filter(x=>bucket(x)===k).sort((a,b)=>(a.dueAt||9e15)-(b.dueAt||9e15));return `<div class="col ${k}"><h3>${t[k]}<span>${r.length}</span></h3>${r.slice(0,6).map(x=>`<button class="it" data-open="${x.id}">${esc(x.title)}<small>${x.dueAt?rel(x.dueAt):"—"}${x.status==="blocked"?" · "+t.st.blocked:""}</small></button>`).join("")||`<small>${t.none}</small>`}</div>`}).join("");
+ showDetail();renderSched();try{renderTrends()}catch(e){}
+ const base=tickets.filter(x=>all||dkey(x.receivedAt)===d).sort((a,b)=>a.receivedAt-b.receivedAt);
+ $("stats").innerHTML=ST.map(s=>`<div class="stat ${filt===s?"on":""}" data-s="${s}"><b>${base.filter(x=>x.status===s).length}</b><span>${t.st[s]}</span></div>`).join("");
+ const rows=base.filter(x=>!filt||x.status===filt);
+ $("list").innerHTML=rows.length?rows.map(x=>card(x,t)).join(""):`<div class="empty">${t.empty}</div>`}
+function card(x,t){if(editing===x.id)return editForm(x,t);const k=bucket(x)||"done",bl=(k==="done"?t.st.done:t[k]).replace(/\s*\(.*\)/,"");const d=x.completedAt?dur(x.completedAt-x.receivedAt):"";
+ return `<article class="tk ${x.status} k-${k}" data-id="${x.id}"><div class="top"><span><span class="bk ${k}">${bl}</span> <b>${esc(x.title)}</b></span>${pill(x,t)}</div>
+ ${x.note?`<p>${esc(x.note)}</p>`:""}<div class="meta">${x.who?"👤 "+esc(x.who):""}${d?` · ⏱ ${t.took} ${d}`:""}${x.dueAt&&bucket(x)?` · <span class="due ${bucket(x)}">${t.due} ${rel(x.dueAt)}</span>`:""}${isLate(x)?` · <span class="due over">${t.lateBy} ${dur(x.completedAt-x.dueAt)}</span>`:""}</div>${isLate(x)?`<div class="meta">${x.lateReason?`${t.lr}: ${esc(x.lateReason)}`:`<i>${t.noReason}</i>`} <button data-late>${t.lrEdit}</button></div>`:""}
+ <div class="row"><label>${t.rcv}${mkTp("receivedAt",x.receivedAt)}</label>
+ <label>${t.dn}${mkTp("completedAt",x.completedAt,x.status!=="done")}</label>
+ <label>${t.due}${mkTp("dueAt",x.dueAt,x.priority==="hold")}</label>
+ <label>${t.stl}<select data-f="status">${ST.map(s=>`<option value="${s}" ${s===x.status?"selected":""}>${t.st[s]}</option>`).join("")}</select></label>
+ <button data-edit>${t.edit}</button> <button data-qr>${t.lbl}</button> <button data-del>${t.del}</button></div>${hist(x,t)}</article>`}
+function loadLocal(){try{tickets=JSON.parse(localStorage.getItem("tk")||"[]")}catch(e){tickets=[]}}
+function saveLocal(){try{localStorage.setItem("tk",JSON.stringify(tickets))}catch(e){}}
+function put(x){if(col){col.doc(x.id).set(x).catch(toast)}else{tickets=tickets.filter(y=>y.id!==x.id).concat(x);saveLocal();render()}}
+function del(id){if(col){col.doc(id).delete().catch(toast)}else{tickets=tickets.filter(y=>y.id!==id);saveLocal();render()}}
+$("add").onclick=()=>{const ti=$("ti").value.trim();if(!ti)return $("ti").focus();
+ const r=tpv($("rc"))||Date.now();
+ const tk={id:"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),title:ti,note:$("no").value.trim(),who:$("wh").value,priority:$("pr").value,status:"new",receivedAt:r,log:[{at:Date.now(),f:"new"}],dueAt:tpv($("du")),completedAt:null},fl=[...$("cf").files];put(tk);if(fl.length)addFiles(tk,fl,$("cd").checked);$("cf").value="";
+ $("ti").value=$("no").value="";setTp($("du"),null);setTp($("rc"),Date.now());if(!$("al").checked)$("dy").value=dkey(r);render()};
+$("list").onchange=$("detail").onchange=e=>{const w=e.target.closest(".tp"),f=(w||e.target).dataset.f,a=e.target.closest("[data-id]");if(!f||!a)return;
+ const x=tickets.find(y=>y.id===a.dataset.id);if(!x)return;const n={...x};
+ if(f==="status"){n.status=e.target.value;n.completedAt=n.status==="done"?(x.completedAt||Date.now()):null}
+ else{const tv=w?tpv(w):null;if(tv)n[f]=tv;else if(f==="dueAt")n[f]=null;else return}
+ if(f==="status"&&n.status!=="done"&&x.lateReason)n.lateReason=null;
+ put(chg(x,n));if(isLate(n)&&!isLate(x)&&!n.lateReason)askLate(n)};
+$("list").onclick=$("detail").onclick=$("dash").onclick=$("sched").onclick=e=>{const b=e.target.closest("button");if(!b)return;const a=b.closest("[data-id]");
+ if(b.dataset.open)return openDetail(b.dataset.open);
+ if(b.hasAttribute("data-qr"))return openDetail(a.dataset.id);
+ if(b.hasAttribute("data-close")){cur=null;return showDetail()}
+ if(b.hasAttribute("data-cal"))return pushCal(tickets.find(y=>code(y)===String(cur).toUpperCase()));
+ if(b.hasAttribute("data-edit")){editing=a.dataset.id;return render()}
+ if(b.hasAttribute("data-cancel")){editing=null;return render()}
+ if(b.hasAttribute("data-save")){const x=tickets.find(y=>y.id===a.dataset.id),g=k=>a.querySelector(`[data-e=${k}]`).value,ti=g("title").trim();if(!x||!ti)return;
+  const n=chg(x,{...x,title:ti,note:g("note").trim(),who:g("who").trim(),priority:g("priority"),dueAt:g("priority")==="hold"?null:x.dueAt});editing=null;return n.log!==x.log?put(n):render()}
+ if(b.hasAttribute("data-prn")){try{window.print()}catch(x){}return}
+ if(b.hasAttribute("data-late")){const x=tickets.find(y=>y.id===a.dataset.id);if(x)askLate(x);return}
+ if(b.hasAttribute("data-del")&&confirm(L[lang].del+"?"))del(a.dataset.id)};
+Object.assign(L.en,{trendT:"Work trends",trA:"Tickets received",trB:"Completed tickets: on time vs late",perD:"Daily (14 days)",perW:"Weekly (8 weeks)",perM:"Monthly (6 months)",by:"Group chart 1 by",byPri:"Urgency level",byWho:"Assignee",bySt:"Status",onT:"On time",lateS:"Late",rate:"On-time rate",tblV:"View as table",oth:"Other",unas:"Unassigned",per_:"Period",noDone:"No completed tickets with a due time in this period",lr:"Late reason",lrEdit:"Add / edit reason",noReason:"No reason given",lateBy:"Finished late by",lrTitle:"Finished after the due time",lrAsk:"Reason (optional, you can skip)",lrSave:"Save reason",lrSkip:"Skip"});
+Object.assign(L.th,{trendT:"แนวโน้มของงาน",trA:"จำนวนงานที่รับเข้า",trB:"งานที่เสร็จ: ทันกำหนด เทียบกับ เกินกำหนด",perD:"รายวัน (14 วัน)",perW:"รายสัปดาห์ (8 สัปดาห์)",perM:"รายเดือน (6 เดือน)",by:"แบ่งกราฟแรกตาม",byPri:"ระดับความเร่งด่วน",byWho:"ผู้รับผิดชอบ",bySt:"สถานะ",onT:"เสร็จทันกำหนด",lateS:"เสร็จเกินกำหนด",rate:"อัตราเสร็จทันกำหนด",tblV:"ดูเป็นตาราง",oth:"อื่น ๆ",unas:"ไม่ระบุ",per_:"ช่วง",noDone:"ยังไม่มีงานที่เสร็จและมีกำหนดเสร็จในช่วงนี้",lr:"เหตุผลที่เสร็จเกินกำหนด",lrEdit:"ระบุ/แก้ไขเหตุผล",noReason:"ยังไม่ได้ระบุเหตุผล",lateBy:"เสร็จช้ากว่ากำหนด",lrTitle:"งานนี้เสร็จเกินกำหนด",lrAsk:"เหตุผล (ไม่บังคับ ข้ามได้)",lrSave:"บันทึกเหตุผล",lrSkip:"ข้าม"});
+FLD.lateReason="lr";
+const G={today:"urgent",d2:"soon",week:"later",month:"later"};
+let per="d",lateCur=null,rzT=null;
+const isLate=x=>!!(x.status==="done"&&x.completedAt&&x.dueAt&&x.completedAt>x.dueAt);
+function askLate(x){lateCur=x;const t=L[lang];$("lmT").textContent=t.lrTitle+": "+x.title;
+ $("lmI").textContent=`${t.due}: ${fm(x.dueAt)} · ${t.dn}: ${fm(x.completedAt)} · ${t.lateBy} ${dur(x.completedAt-x.dueAt)}`;
+ $("lmR").value=x.lateReason||"";$("lateM").classList.add("on");setTimeout(()=>$("lmR").focus(),0)}
+function closeLate(){$("lateM").classList.remove("on");lateCur=null}
+$("lmK").onclick=closeLate;
+$("lateM").onclick=e=>{if(e.target.id==="lateM")closeLate()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("lateM").classList.contains("on"))closeLate()});
+$("lmS").onclick=()=>{const v=$("lmR").value.trim(),c=lateCur;closeLate();if(!c)return;
+ const x=tickets.find(y=>y.id===c.id),b=x&&x.status==="done"?x:c;
+ if((b.lateReason||"")!==v)put(chg(b,{...b,lateReason:v||null}))};
+function edges(){const n=new Date(),y=n.getFullYear(),mo=n.getMonth(),d=n.getDate(),e=[];let N;
+ if(per==="d"){N=14;for(let i=0;i<=N;i++)e.push(new Date(y,mo,d-(N-1)+i).getTime())}
+ else if(per==="w"){N=8;const mon=d-((n.getDay()+6)%7);for(let i=0;i<=N;i++)e.push(new Date(y,mo,mon-7*(N-1)+7*i).getTime())}
+ else{N=6;for(let i=0;i<=N;i++)e.push(new Date(y,mo-(N-1)+i,1).getTime())}
+ const lc=lang==="th"?"th-TH":"en-GB",f=(ms,o)=>new Date(ms).toLocaleDateString(lc,o),dm={day:"numeric",month:"short"};
+ const lab=[],titles=[];
+ for(let i=0;i<N;i++){
+  if(per==="m"){lab.push(f(e[i],{month:"short"}));titles.push(f(e[i],{month:"long",year:"numeric"}))}
+  else if(per==="w"){lab.push(f(e[i],dm));titles.push(f(e[i],dm)+" – "+f(e[i+1]-864e5/2,dm))}
+  else{lab.push(f(e[i],dm));titles.push(f(e[i],{weekday:"short",day:"numeric",month:"short"}))}}
+ return{e,N,lab,titles}}
+const bi=(E,ms)=>{if(ms==null||ms<E.e[0]||ms>=E.e[E.N])return-1;for(let i=0;i<E.N;i++)if(ms<E.e[i+1])return i;return-1};
+function legend(el,series){el.textContent="";if(series.length<2)return;
+ series.forEach(s=>{const sp=document.createElement("span");sp.className="lgi";const k=document.createElement("i");k.style.background=s.color;sp.append(k,document.createTextNode(s.name));el.appendChild(sp)})}
+function tbl(el,titles,series){el.textContent="";if(!series.length)return;
+ const tb=document.createElement("table"),hr=tb.insertRow();
+ ["",...series.map(s=>s.name)].forEach((h,i)=>{const th=document.createElement("th");th.textContent=i?h:L[lang].per_;hr.appendChild(th)});
+ titles.forEach((l,i)=>{const r=tb.insertRow();r.insertCell().textContent=l;series.forEach(s=>{r.insertCell().textContent=s.vals[i]})});el.appendChild(tb)}
+function lineChart(el,c){const n=c.labels.length,Wd=Math.max(280,el.clientWidth||600),Ht=220,dl=c.series.length>0&&c.series.length<=4&&Wd>=420,
+  m={l:34,r:dl?104:14,t:12,b:26},iw=Wd-m.l-m.r,ih=Ht-m.t-m.b;
+ el.textContent="";el.style.position="relative";
+ if(!c.series.length){const d=document.createElement("div");d.className="empty";d.textContent=L[lang].none;el.appendChild(d);return}
+ const mx=Math.max(1,...c.series.flatMap(s=>s.vals)),stp=mx<=5?1:mx<=10?2:Math.ceil(mx/5),top=Math.ceil(mx/stp)*stp;
+ const X=i=>m.l+(n<2?iw/2:i*iw/(n-1)),Y=v=>m.t+ih-v/top*ih;
+ let g="";
+ for(let v=0;v<=top;v+=stp)g+=`<line class="gl" x1="${m.l}" x2="${m.l+iw}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${v}</text>`;
+ const k=Math.max(1,Math.ceil(56/(n<2?56:iw/(n-1))));
+ c.labels.forEach((l,i)=>{if(i%k===0)g+=`<text class="ax" x="${X(i)}" y="${Ht-8}" text-anchor="middle">${esc(l)}</text>`});
+ const ls=c.series.map(s=>`<polyline class="ln" points="${s.vals.map((v,i)=>X(i)+","+Y(v)).join(" ")}" style="stroke:${s.color}"/>`+s.vals.map((v,i)=>`<circle class="mk" cx="${X(i)}" cy="${Y(v)}" r="4" style="fill:${s.color}"/>`).join("")).join("");
+ let db="";
+ if(dl){const ys=c.series.map((s,j)=>({j,y:Y(s.vals[n-1])})).sort((a,b)=>a.y-b.y);
+  for(let i=1;i<ys.length;i++)if(ys[i].y<ys[i-1].y+14)ys[i].y=ys[i-1].y+14;
+  const bt=m.t+ih,L1=ys.length-1;if(ys[L1].y>bt){ys[L1].y=bt;for(let i=L1-1;i>=0;i--)if(ys[i].y>ys[i+1].y-14)ys[i].y=ys[i+1].y-14}
+  db=ys.map(o=>{const s=c.series[o.j],x=X(n-1)+10;return `<line class="ln" x1="${x}" x2="${x+12}" y1="${o.y}" y2="${o.y}" style="stroke:${s.color}"/><text class="dl" x="${x+16}" y="${o.y+4}">${esc(s.name)}</text>`}).join("")}
+ el.innerHTML=`<svg width="${Wd}" height="${Ht}" viewBox="0 0 ${Wd} ${Ht}" role="img" tabindex="0" aria-label="${esc(c.title)}">${g}<line class="xh" y1="${m.t}" y2="${m.t+ih}" style="display:none"/>${ls}${db}<rect x="${m.l-10}" y="${m.t}" width="${iw+20}" height="${ih}" fill="transparent"/></svg><div class="tip" style="display:none"></div>`;
+ const svg=el.querySelector("svg"),xh=svg.querySelector(".xh"),tip=el.querySelector(".tip");let cur=n-1;
+ const show=i=>{i=Math.max(0,Math.min(n-1,i));cur=i;const x=X(i);xh.setAttribute("x1",x);xh.setAttribute("x2",x);xh.style.display="";
+  tip.textContent="";const h=document.createElement("div");h.className="th";h.textContent=c.titles[i];tip.appendChild(h);
+  c.series.forEach(s=>{const r=document.createElement("div");r.className="tr";const kk=document.createElement("i");kk.style.background=s.color;const v=document.createElement("b");v.textContent=s.vals[i];const nm=document.createElement("span");nm.textContent=s.name;r.append(kk,v,nm);tip.appendChild(r)});
+  const ex=c.extra&&c.extra(i);if(ex){const r=document.createElement("div");r.className="tx2";r.textContent=ex;tip.appendChild(r)}
+  tip.style.display="block";const tw=tip.offsetWidth;tip.style.left=Math.max(0,x+12+tw>Wd?x-tw-12:x+12)+"px";tip.style.top=m.t+"px"};
+ const hide=()=>{xh.style.display="none";tip.style.display="none"};
+ svg.addEventListener("pointermove",e=>{const r=svg.getBoundingClientRect();show(n<2?0:Math.round((e.clientX-r.left-m.l)/(iw/(n-1))))});
+ svg.addEventListener("pointerleave",hide);svg.addEventListener("blur",hide);svg.addEventListener("focus",()=>show(cur));
+ svg.addEventListener("keydown",e=>{if(e.key==="ArrowLeft"){e.preventDefault();show(cur-1)}else if(e.key==="ArrowRight"){e.preventDefault();show(cur+1)}})}
+function renderTrends(){const t=L[lang],E=edges();
+ document.querySelectorAll("#trp [data-per]").forEach(b=>b.classList.toggle("p",b.dataset.per===per));
+ const sel=$("tby");if(sel.dataset.l!==lang){const v=sel.value||"pri";sel.innerHTML=[["pri","byPri"],["who","byWho"],["st","bySt"]].map(([k,l])=>`<option value="${k}">${t[l]}</option>`).join("");sel.value=v;sel.dataset.l=lang}
+ const dim=sel.value||"pri";let keys,lab,getK,dn;
+ if(dim==="pri"){keys=PE;lab=k=>t.prs[k];getK=x=>PE.includes(x.priority)?x.priority:"mid";dn=t.byPri}
+ else if(dim==="st"){keys=ST;lab=k=>t.st[k];getK=x=>x.status;dn=t.bySt}
+ else{keys=["RUIIY","IN","other","none"];lab=k=>k==="other"?t.oth:k==="none"?t.unas:k;getK=x=>W.includes(x.who)?x.who:x.who?"other":"none";dn=t.byWho}
+ const cnt=keys.map(()=>Array(E.N).fill(0));
+ tickets.forEach(x=>{const i=bi(E,x.receivedAt),j=keys.indexOf(getK(x));if(i>=0&&j>=0)cnt[j][i]++});
+ const s1=keys.map((k,j)=>({name:lab(k),color:`var(--s${j+1})`,vals:cnt[j]})).filter(s=>s.vals.some(v=>v));
+ $("c1t").textContent=t.trA+" · "+dn;
+ lineChart($("c1"),{labels:E.lab,titles:E.titles,series:s1,title:t.trA+" "+dn});legend($("c1l"),s1);tbl($("c1x"),E.titles,s1);
+ const on=Array(E.N).fill(0),lt=Array(E.N).fill(0);let tOn=0,tLt=0;
+ tickets.forEach(x=>{if(x.status==="done"&&x.completedAt&&x.dueAt){const i=bi(E,x.completedAt);if(i<0)return;if(x.completedAt<=x.dueAt){on[i]++;tOn++}else{lt[i]++;tLt++}}});
+ const s2=[{name:t.onT,color:"var(--s1)",vals:on},{name:t.lateS,color:"var(--s2)",vals:lt}],tot=tOn+tLt;
+ $("c2t").textContent=t.trB;
+ $("c2s").textContent=tot?`${t.rate}: ${Math.round(tOn/tot*100)}% (${tOn}/${tot})`:t.noDone;
+ lineChart($("c2"),{labels:E.lab,titles:E.titles,series:s2,title:t.trB,extra:i=>{const a=on[i]+lt[i];return a?`${t.rate}: ${Math.round(on[i]/a*100)}%`:null}});
+ legend($("c2l"),s2);tbl($("c2x"),E.titles,s2)}
+$("trp").onclick=e=>{const b=e.target.closest("[data-per]");if(b){per=b.dataset.per;renderTrends()}};
+$("tby").onchange=renderTrends;
+addEventListener("resize",()=>{clearTimeout(rzT);rzT=setTimeout(()=>{try{renderTrends()}catch(e){}},150)});
+$("tabs").onclick=e=>{const k=e.target.dataset.tab;if(k){tab=k;renderSched()}};
+$("fd").onchange=()=>{const v=$("fd").value.trim();if(v){cur=v;showDetail();$("fd").value=""}};
+window.onhashchange=()=>{const m=/[?&#]t=([^&]+)/.exec(location.hash);if(m){cur=decodeURIComponent(m[1]);showDetail()}};
+$("xl").onclick=async()=>{if(typeof XLSX==="undefined")return toast();const t=L[lang],f=ms=>ms?loc(ms).replace("T"," "):"";
+ const rows=[...tickets].sort((a,b)=>a.receivedAt-b.receivedAt).map(x=>({[t.code]:code(x),[t.ttl]:x.title,[t.note]:x.note,[t.who]:x.who,[t.pri]:t.prs[effP(x)],[t.stl]:t.st[x.status],[t.rcv]:f(x.receivedAt),[t.due]:f(x.dueAt),[t.dn]:f(x.completedAt),[t.lr]:x.lateReason||"",[t.urg]:bucket(x)?t[bucket(x)]:"",[t.took+" (min)"]:x.completedAt?Math.round((x.completedAt-x.receivedAt)/6e4):""}));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),"Tickets");
+ try{const d=await window.claude.use("downloads");if(!d)throw 0;await d.save({filename:"tickets-"+dkey(Date.now())+".xlsx",data:XLSX.write(wb,{type:"array",bookType:"xlsx"})})}catch(e){if(e===0)toast()}};
+$("stats").onclick=e=>{const s=e.target.closest("[data-s]");if(s){filt=filt===s.dataset.s?"":s.dataset.s;render()}};
+$("lang").onclick=()=>{lang=lang==="th"?"en":"th";applyLang()};
+$("td").onclick=()=>{$("dy").value=dkey(Date.now());$("al").checked=false;render()};
+$("dy").onchange=$("al").onchange=render;
+$("dy").value=dkey(Date.now());setTp($("rc"),Date.now());setTp($("du"),null);
+$("wH").innerHTML=[...Array(24).keys()].map(i=>`<span>${p2(i)}</span>`).join("");$("wM").innerHTML=[...Array(60).keys()].map(i=>`<span>${p2(i)}</span>`).join("");
+let wt=null;
+$("wH").onscroll=$("wM").onscroll=()=>{if(wt)wt.querySelector(".t").value=p2(Math.min(23,Math.round($("wH").scrollTop/30)))+":"+p2(Math.min(59,Math.round($("wM").scrollTop/30)))};
+$("wok").onclick=()=>{$("wheel").classList.remove("on");if(!wt)return;const d=wt.querySelector(".d");if(!d.value)d.value=dkey(Date.now());wt.querySelector(".t").dispatchEvent(new Event("change",{bubbles:true}));wt=null};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-wheel]"),w=$("wheel");
+ if(!b){if(!e.target.closest("#wheel"))w.classList.remove("on");return}
+ wt=b.closest(".tp");const [h,m]=(normT(wt.querySelector(".t").value)||"09:00").split(":").map(Number),r=b.getBoundingClientRect();
+ w.style.left=Math.max(8,Math.min(r.left,innerWidth-170))+"px";w.style.top=Math.max(8,Math.min(r.bottom+4,innerHeight-230))+"px";w.classList.add("on");$("wH").scrollTop=h*30;$("wM").scrollTop=m*30});
+document.addEventListener("focusin",e=>{if(e.target.matches(".tp .t"))e.target.dataset.old=e.target.value});
+document.addEventListener("change",e=>{if(e.target.matches(".tp .t")){const q=normT(e.target.value);e.target.value=q||(e.target.value.trim()?e.target.dataset.old||"":"")}},true);
+loadLocal();applyLang();
+(async()=>{try{const db=window.claude&&await window.claude.use("db");if(!db)return;
+ col=db.collection("tickets");
+ col.onSnapshot(s=>{tickets=s.docs.map(d=>({id:d.id,...d.data()}));$("mode").textContent=L[lang].sh;render()},()=>{col=null;loadLocal();applyLang()});
+ $("mode").textContent=L[lang].sh}catch(e){col=null}})();
+</script></body></html>
+
+</body></html>
